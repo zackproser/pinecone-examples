@@ -5,7 +5,7 @@ This repo contains my initial experiments while playing with Pinecone.io and wor
 # Current examples
 
 * [Quickstart](./quickstart)
-* [Langchain Retrieval Augmentation](./langchain-retrieval)
+* [Langchain Retrieval Augmentation](./langchain-retrieval-augmentation)
 
 ## Quickstart
 
