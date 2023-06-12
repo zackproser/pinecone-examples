@@ -9,6 +9,13 @@ if api_key is None:
     print("You must set PINECONE_API_KEY environment variable")
     sys.exit(1)
 
+pinecone_environment = os.getenv("PINECONE_ENVIRONMENT")
+if pinecone_environment is None:
+    pinecone_environment = "us-west4-gcp-free"
+    print(
+        f"No PINECONE_ENVIRONMENT set, using default: {pinecone_environment}")
+
+
 pinecone.init(api_key=api_key,
               environment="us-west4-gcp-free")
 
