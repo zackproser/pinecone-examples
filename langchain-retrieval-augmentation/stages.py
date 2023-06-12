@@ -2,6 +2,8 @@ from uuid import uuid4
 
 import pinecone
 from datasets import load_dataset
+from langchain.chains import RetrievalQA
+from langchain.chat_models import ChatOpenAI
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Pinecone
 from text_processing import split_text_records
@@ -126,8 +128,6 @@ def query_stage(
 
     index = pinecone.Index(index_name)
 
-    print(f"Initializing a vector store in the Pinecone index {index_name}...")
-
     # Use OpenAI's text embedding ada-002 model
     MODEL_NAME = 'text-embedding-ada-002'
 
@@ -140,10 +140,19 @@ def query_stage(
         index, embed.embed_query, text_field
     )
 
-    results = vectorstore.similarity_search(
-        query,
-        k=3
+    llm = ChatOpenAI(
+        openai_api_key=openai_api_key,
+        model_name='gpt-3.5-turbo',
+        temperature=0.0
     )
+
+    qa = RetrievalQA.from_chain_type(
+        llm=llm,
+        chain_type="stuff",
+        retriever=vectorstore.as_retriever()
+    )
+
+    results = qa.run(query)
 
     print(f"Query results: {results}")
 
