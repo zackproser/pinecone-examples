@@ -27,11 +27,19 @@ parser.add_argument("-i", "--index-name",
                     help="Name of the pinecone index to use",
                     default="langchain-retrieveal-augmentation",
                     required=False)
+parser.add_argument("-q", "--query",
+                    type=str,
+                    help="Query to run against the index. Ensure you have already run the init and upsert steps successfully!",
+                    default="Who was Alan Turing?",
+                    required=False,
+                    )
+
 
 args = parser.parse_args()
 
 PINECONE_INDEX = args.index_name
 CURRENT_STAGE = args.stage
+QUERY = args.query
 
 # Sanity check that required env vars have been exported, otherwise
 # bail out early with a helpful error message explaining to the user
@@ -52,7 +60,7 @@ elif CURRENT_STAGE == 'upsert':
                  PINECONE_ENVIRONMENT, OPENAI_API_KEY)
 elif CURRENT_STAGE == 'query':
     query_stage(PINECONE_INDEX, PINECONE_API_KEY,
-                PINECONE_ENVIRONMENT, OPENAI_API_KEY)
+                PINECONE_ENVIRONMENT, OPENAI_API_KEY, QUERY)
 elif CURRENT_STAGE == 'teardown':
     teardown_stage(PINECONE_INDEX, PINECONE_API_KEY, PINECONE_ENVIRONMENT)
 else:

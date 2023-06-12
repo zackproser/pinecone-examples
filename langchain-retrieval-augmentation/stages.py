@@ -111,7 +111,8 @@ def query_stage(
         index_name: str,
         pinecone_api_key: str,
         pinecone_environment: str,
-        openai_api_key: str
+        openai_api_key: str,
+        query: str
 ):
 
     print("Stage query running...")
@@ -138,8 +139,6 @@ def query_stage(
     vectorstore = Pinecone(
         index, embed.embed_query, text_field
     )
-
-    query = "who was Benito Mussolini?"
 
     results = vectorstore.similarity_search(
         query,
