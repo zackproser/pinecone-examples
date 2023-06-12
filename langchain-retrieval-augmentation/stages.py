@@ -3,6 +3,7 @@ from uuid import uuid4
 import pinecone
 from datasets import load_dataset
 from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import Pinecone
 from text_processing import split_text_records
 from tqdm.auto import tqdm
 
@@ -104,6 +105,48 @@ def upsert_stage(
     index_stats = index.describe_index_stats()
     print(
         f"Upsert routine complete...Pinecone index stats: {index_stats}")
+
+
+def query_stage(
+        index_name: str,
+        pinecone_api_key: str,
+        pinecone_environment: str,
+        openai_api_key: str
+):
+
+    print("Stage query running...")
+
+    pinecone.init(
+        api_key=pinecone_api_key,
+        environment=pinecone_environment
+    )
+
+    text_field = 'text'
+
+    index = pinecone.Index(index_name)
+
+    print(f"Initializing a vector store in the Pinecone index {index_name}...")
+
+    # Use OpenAI's text embedding ada-002 model
+    MODEL_NAME = 'text-embedding-ada-002'
+
+    embed = OpenAIEmbeddings(
+        model=MODEL_NAME,
+        openai_api_key=openai_api_key
+    )
+
+    vectorstore = Pinecone(
+        index, embed.embed_query, text_field
+    )
+
+    query = "who was Benito Mussolini?"
+
+    results = vectorstore.similarity_search(
+        query,
+        k=3
+    )
+
+    print(f"Query results: {results}")
 
 
 def teardown_stage(
