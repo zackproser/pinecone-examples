@@ -2,7 +2,7 @@
 
 ## Quickstart
 
-![Pinecone.io Quickstart](./_docs/quickstart.gif)
+![Pinecone.io Quickstart](./_docs/pinecone-quickstart.gif)
 
 Get up and running with Pinecone.io in seconds. Runnable Python example to: 
 
@@ -14,7 +14,7 @@ This repo contains my initial experiments while playing with Pinecone.io and wor
 
 ## Langchain Retrieval Augmentation example 
 
-![Langchain Retrieval Augmentation](./_docs/langchain.gif)
+![Langchain Retrieval Augmentation](./_docs/langchain-retrieval.gif)
 
 Leverage Pinecone.io and OpenAI to quickly build a robust chatbot like experience based on a Wikipedia dataset. 
 
